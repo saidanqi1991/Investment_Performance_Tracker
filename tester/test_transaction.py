@@ -2,6 +2,7 @@ import unittest
 
 from app.util.transaction_loader import *
 from app.dto.transaction import *
+from app.processor.trans_type_map import *
 
 class TransactionTester(unittest.TestCase):
 
@@ -46,6 +47,14 @@ class TransactionTester(unittest.TestCase):
         self.assertEqual(Decimal("-10.00"), transaction1.amount)
 
         self.assertEqual(392, len(transaction2024))
+
+    def test_create_trans_type_map(self):
+        data_2024 = TransactionLoader('data/2024.csv')
+        transaction_2024 = data_2024.import_and_create_dictionary()
+        trans_type_2024 = TransTypeMap(transaction_2024)
+        trans_type_2024.print_statistics()
+        all_stats = trans_type_2024.get_statistics()
+        self.assertEqual(6, len(all_stats))
 
 if __name__ == '__main__':
     unittest.main()
